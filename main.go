@@ -14,6 +14,8 @@ import (
 var logger logr.Logger
 
 func main() {
+	kubeconfigPath := flag.String("kubeconfig", "./kubeconfig", "Kubernetes configuration file location")
+
 	flag.Parse()
 
 	err := registerLogger()
@@ -22,7 +24,7 @@ func main() {
 		return
 	}
 
-	logger.Info("Prepare to create router")
+	logger.WithValues("kubeconfig location", *kubeconfigPath).Info("Kubeconfig parameters were successfully parsed")
 
 	err = router.NewRouter("127.0.0.1:30086")
 	if err != nil {
@@ -34,7 +36,7 @@ func main() {
 func registerLogger() error {
 	zapLog, err := zap.NewDevelopment()
 	if err != nil {
-		panic(fmt.Sprintf("who watches the watchmen (%v)?", err))
+		return fmt.Errorf("who watches the watchmen (%v)?", err)
 	}
 	logger = zapr.NewLogger(zapLog)
 

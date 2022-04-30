@@ -32,10 +32,13 @@ func DeployHandler(w http.ResponseWriter, r *http.Request) {
 		data, err := io.ReadAll(r.Body)
 		if err != nil {
 			logger.Error(err, "Fail to read request body")
-			io.WriteString(w, "Fail to read request body")
 			return
 		}
 		err = json.Unmarshal(data, &xmlmsg)
+		if err != nil {
+			logger.Error(err, "Fail to parse xml str")
+			return
+		}
 
 		// Get xml data
 		xmlstr := xmlmsg.XmlStr

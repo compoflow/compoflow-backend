@@ -14,7 +14,7 @@ func NewRouter(ip_port string) error {
 
 	http.HandleFunc("/", handler.DeployHandler)
 
-	logger.Info("Prepare to listen")
+	logger.Info("Start listen")
 
 	err := http.ListenAndServe(ip_port, nil)
 	if err != nil {
