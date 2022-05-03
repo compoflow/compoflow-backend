@@ -6,11 +6,11 @@ import (
 
 	"github.com/Lavender-QAQ/microservice-workflows-backend/executer/common"
 	"github.com/beevik/etree"
+	"github.com/go-logr/logr"
 )
 
 var (
 	mp       map[string]common.NodeInterface
-	wg       sync.WaitGroup
 	mp_mutex sync.Mutex
 	doc      *etree.Document
 )
@@ -64,7 +64,7 @@ func buildFlow(flows []*etree.Element) {
 // The entry function of the entire DAG building module,
 // completes the initialization of the map,
 // loading the etree package, building the DAG, and returning the workflow id
-func Xml2Dag(xmlstr string) (string, *map[string]common.NodeInterface, error) {
+func Xml2Dag(logger logr.Logger, xmlstr string) (string, *map[string]common.NodeInterface, error) {
 	mp = make(map[string]common.NodeInterface)
 	doc = etree.NewDocument()
 	if err := doc.ReadFromString(xmlstr); err != nil {

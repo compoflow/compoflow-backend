@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/Lavender-QAQ/microservice-workflows-backend/executer/kubernetes"
 	"github.com/Lavender-QAQ/microservice-workflows-backend/handler"
 	"github.com/Lavender-QAQ/microservice-workflows-backend/router"
 	"github.com/go-logr/logr"
@@ -25,6 +26,12 @@ func main() {
 	}
 
 	logger.WithValues("kubeconfig location", *kubeconfigPath).Info("Kubeconfig parameters were successfully parsed")
+
+	err = kubernetes.Init(*kubeconfigPath)
+	if err != nil {
+		logger.Error(err, "Fail to initialize kubernetes cluster")
+		return
+	}
 
 	err = router.NewRouter(*listen)
 	if err != nil {
