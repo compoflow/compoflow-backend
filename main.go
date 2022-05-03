@@ -15,7 +15,7 @@ var logger logr.Logger
 
 func main() {
 	kubeconfigPath := flag.String("kubeconfig", "./kubeconfig", "Kubernetes configuration file location")
-
+	listen := flag.String("listen", "127.0.0.1:30086", "Specify the listening ip address and port")
 	flag.Parse()
 
 	err := registerLogger()
@@ -26,7 +26,7 @@ func main() {
 
 	logger.WithValues("kubeconfig location", *kubeconfigPath).Info("Kubeconfig parameters were successfully parsed")
 
-	err = router.NewRouter("127.0.0.1:30086")
+	err = router.NewRouter(*listen)
 	if err != nil {
 		logger.Error(err, "Fail to create router")
 		return
