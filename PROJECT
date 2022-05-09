@@ -1,0 +1,6 @@
+domain: my.domain
+layout:
+- go.kubebuilder.io/v3
+projectName: microservice-workflows-backend
+repo: github.com/Lavender-QAQ/microservice-workflows-backend
+version: "3"
