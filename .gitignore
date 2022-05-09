@@ -26,3 +26,5 @@ testbin/*
 
 # Ignore kubernetes config file
 kubeconfig
+
+.DS_Store
