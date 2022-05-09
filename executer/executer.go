@@ -23,8 +23,11 @@ func NewWorkflowStarter(logger logr.Logger, workflow_id string, dag *map[string]
 
 // Enter the information for the DAG and turn the map into a real workflow
 func (w *WorkflowStarter) CreateWorkflow() error {
+	logger := w.Logger
+
 	err := argo.CreateWorkflow(w.Logger.WithName("argo"), w.Workflow_id, w.dag)
 	if err != nil {
+		logger.Error(err, "Create workflow err")
 		return err
 	}
 	return nil

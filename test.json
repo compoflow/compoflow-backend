@@ -1,0 +1,184 @@
+{
+    "metadata": {
+        "generateName": "rtdtrdt",
+        "namespace": "argo",
+        "creationTimestamp": null
+    },
+    "spec": {
+        "templates": [
+            {
+                "name": "rtdtrdt-dag",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "dag": {
+                    "tasks": [
+                        {
+                            "name": "Pythonscript-0h416eb",
+                            "template": "Pythonscript-0h416eb",
+                            "arguments": {
+                                "artifacts": [
+                                    {
+                                        "name": "Suspend-04pttkt-art",
+                                        "from": "{{dag.Suspend-04pttkt.outputs.artifacts.Suspend-04pttkt-art}}"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "Suspend-04pttkt"
+                            ]
+                        },
+                        {
+                            "name": "Docker-0pizbzq",
+                            "template": "Docker-0pizbzq",
+                            "arguments": {}
+                        },
+                        {
+                            "name": "Docker-19t1frr",
+                            "template": "Docker-19t1frr",
+                            "arguments": {}
+                        },
+                        {
+                            "name": "Suspend-04pttkt",
+                            "template": "Suspend-04pttkt",
+                            "arguments": {
+                                "artifacts": [
+                                    {
+                                        "name": "Pythonscript-1ae4mn9-art",
+                                        "from": "{{dag.Pythonscript-1ae4mn9.outputs.artifacts.Pythonscript-1ae4mn9-art}}"
+                                    },
+                                    {
+                                        "name": "Docker-19t1frr-art",
+                                        "from": "{{dag.Docker-19t1frr.outputs.artifacts.Docker-19t1frr-art}}"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "Pythonscript-1ae4mn9",
+                                "Docker-19t1frr"
+                            ]
+                        },
+                        {
+                            "name": "Pythonscript-1ae4mn9",
+                            "template": "Pythonscript-1ae4mn9",
+                            "arguments": {
+                                "artifacts": [
+                                    {
+                                        "name": "Docker-0pizbzq-art",
+                                        "from": "{{dag.Docker-0pizbzq.outputs.artifacts.Docker-0pizbzq-art}}"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "Docker-0pizbzq"
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "inputs": {},
+                "outputs": {},
+                "metadata": {}
+            },
+            {
+                "name": "Docker-0pizbzq",
+                "inputs": {},
+                "outputs": {
+                    "artifacts": [
+                        {
+                            "name": "Docker-0pizbzq-art",
+                            "path": "/tmp/Docker-0pizbzq-art.json"
+                        }
+                    ]
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "lavenderqaq/agency",
+                    "command": [
+                        "./agency"
+                    ],
+                    "args": [
+                        "--host",
+                        "platform-frontend:0.1.1-master-11-svc.argo.svc.cluster.local",
+                        "--port",
+                        "0",
+                        "--target",
+                        "",
+                        "--ofile",
+                        "/tmp/Docker-0pizbzq-art.json"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "Docker-19t1frr",
+                "inputs": {},
+                "outputs": {
+                    "artifacts": [
+                        {
+                            "name": "Docker-19t1frr-art",
+                            "path": "/tmp/Docker-19t1frr-art.json"
+                        }
+                    ]
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "lavenderqaq/agency",
+                    "command": [
+                        "./agency"
+                    ],
+                    "args": [
+                        "--host",
+                        "platform-frontend:0.1.2-master-12-svc.argo.svc.cluster.local",
+                        "--port",
+                        "0",
+                        "--target",
+                        "",
+                        "--ofile",
+                        "/tmp/Docker-19t1frr-art.json"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "inputs": {},
+                "outputs": {},
+                "metadata": {}
+            },
+            {
+                "name": "Pythonscript-1ae4mn9",
+                "inputs": {
+                    "artifacts": [
+                        {
+                            "name": "Docker-0pizbzq-art",
+                            "path": "/tmp/Docker-0pizbzq-art"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "artifacts": [
+                        {
+                            "name": "Pythonscript-1ae4mn9-art",
+                            "path": "/tmp/Pythonscript-1ae4mn9-art.json"
+                        }
+                    ]
+                },
+                "metadata": {},
+                "script": {
+                    "name": "",
+                    "resources": {},
+                    "source": "none"
+                }
+            }
+        ],
+        "entrypoint": "rtdtrdt-dag",
+        "arguments": {}
+    },
+    "status": {
+        "startedAt": null,
+        "finishedAt": null
+    }
+}

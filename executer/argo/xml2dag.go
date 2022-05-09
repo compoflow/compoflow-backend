@@ -68,6 +68,7 @@ func Xml2Dag(logger logr.Logger, xmlstr string) (string, *map[string]common.Node
 	mp = make(map[string]common.NodeInterface)
 	doc = etree.NewDocument()
 	if err := doc.ReadFromString(xmlstr); err != nil {
+		logger.Error(err, "Read xmlstr error")
 		return "", nil, err
 	}
 	process := doc.SelectElement("definitions").SelectElement("process")

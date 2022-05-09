@@ -1,5 +1,9 @@
 package common
 
+import (
+	v1alpha1 "github.com/argoproj/argo-workflows/v3/pkg/apis/workflow/v1alpha1"
+)
+
 type NodeInterface interface {
 	// Get node id
 	GetId() string
@@ -17,4 +21,6 @@ type NodeInterface interface {
 	HaveInNode() bool
 	// Check if this node has out nodes
 	HaveOutNode() bool
+	// Generate template
+	GenerateTemplate() v1alpha1.Template
 }

@@ -1,13 +1,17 @@
 package argo
 
-import "strconv"
+import (
+	"strconv"
+
+	"github.com/Lavender-QAQ/microservice-workflows-backend/executer/kubernetes"
+)
 
 type Args []string
 
 func NewArgs(image string, port int, target string) Args {
 	var args Args
 	args = append(args, "--host")
-	args = append(args, image+"-svc.argo.svc.cluster.local")
+	args = append(args, image+"-svc."+kubernetes.GetNamespace()+".svc.cluster.local")
 	args = append(args, "--port")
 	args = append(args, strconv.Itoa(port))
 	args = append(args, "--target")

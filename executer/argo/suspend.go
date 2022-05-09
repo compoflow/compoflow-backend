@@ -26,6 +26,10 @@ func NewSuspendNode(id string, suspend int) *SuspendNode {
 	}
 }
 
+func (s *SuspendNode) GenerateTemplate() v1alpha1.Template {
+	return v1alpha1.Template{}
+}
+
 // Add suspend node to map
 func buildSuspendNode(e etree.Element, node_wg *sync.WaitGroup) {
 	defer node_wg.Done()
@@ -39,8 +43,4 @@ func buildSuspendNode(e etree.Element, node_wg *sync.WaitGroup) {
 	mp_mutex.Lock()
 	mp[id] = node
 	mp_mutex.Unlock()
-}
-
-func (s *SuspendNode) GenerateTemplate() v1alpha1.Template {
-	return v1alpha1.Template{}
 }
