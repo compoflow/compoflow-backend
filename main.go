@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/Lavender-QAQ/microservice-workflows-backend/conf"
 
 	"github.com/Lavender-QAQ/microservice-workflows-backend/executer/kubernetes"
 	"github.com/Lavender-QAQ/microservice-workflows-backend/handler"
@@ -15,6 +16,8 @@ import (
 var logger logr.Logger
 
 func main() {
+	conf.Init()
+
 	kubeconfigPath := flag.String("kubeconfig", "./kubeconfig", "Kubernetes configuration file location")
 	listen := flag.String("listen", "127.0.0.1:30086", "Specify the listening ip address and port")
 	flag.Parse()
