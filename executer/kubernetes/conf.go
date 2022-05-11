@@ -14,9 +14,9 @@ var KubeConfig []byte
 var RestConf *rest.Config
 var clientset *kubernetes.Clientset
 
-func Init(kubeconfigPath string) error {
+func Init(restConf *rest.Config) error {
 	var err error
-	clientset, err = InitClient(kubeconfigPath)
+	clientset, err = InitClient(restConf)
 	if err != nil {
 		return err
 	}
@@ -31,11 +31,7 @@ func GetNamespace() string {
 }
 
 // Initialize the K8S client
-func InitClient(filepath string) (*kubernetes.Clientset, error) {
-	restConf, err := GetRestConf(filepath)
-	if err != nil {
-		return nil, err
-	}
+func InitClient(restConf *rest.Config) (*kubernetes.Clientset, error) {
 	clientset, err := kubernetes.NewForConfig(restConf)
 	if err != nil {
 		return nil, err

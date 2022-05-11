@@ -9,7 +9,7 @@ import (
 
 var RouterLogger logr.Logger
 
-func NewRouter(ip_port string) error {
+func NewRouter(ip_port string) {
 	logger := RouterLogger
 
 	http.HandleFunc("/deploy", handler.DeployHandler)
@@ -20,8 +20,6 @@ func NewRouter(ip_port string) error {
 	err := http.ListenAndServe(ip_port, nil)
 	if err != nil {
 		logger.Error(err, "Router listen error")
-		return err
+		return
 	}
-
-	return nil
 }
