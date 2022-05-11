@@ -20,6 +20,8 @@ import (
 	"flag"
 	"os"
 
+	"github.com/Lavender-QAQ/microservice-workflows-backend/conf"
+
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
@@ -60,6 +62,8 @@ func registerLogger() error {
 }
 
 func main() {
+	conf.Init()
+
 	var metricsAddr string
 	var enableLeaderElection bool
 	var probeAddr string
