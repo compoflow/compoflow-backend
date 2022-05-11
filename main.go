@@ -18,6 +18,8 @@ package main
 
 import (
 	"flag"
+	"fmt"
+	"github.com/Lavender-QAQ/microservice-workflows-backend/conf"
 	"os"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
@@ -60,6 +62,10 @@ func registerLogger() error {
 }
 
 func main() {
+	conf.Init()
+
+	kubeconfigPath := flag.String("kubeconfig", "./kubeconfig", "Kubernetes configuration file location")
+	listen := flag.String("listen", "127.0.0.1:30086", "Specify the listening ip address and port")
 	var metricsAddr string
 	var enableLeaderElection bool
 	var probeAddr string

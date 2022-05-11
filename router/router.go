@@ -12,7 +12,8 @@ var RouterLogger logr.Logger
 func NewRouter(ip_port string) {
 	logger := RouterLogger
 
-	http.HandleFunc("/", handler.DeployHandler)
+	http.HandleFunc("/deploy", handler.DeployHandler)
+	http.HandleFunc("/save", handler.SaveHandler)
 
 	logger.WithValues("listening ip address and port", ip_port).Info("Start listen")
 
