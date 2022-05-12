@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/Lavender-QAQ/microservice-workflows-backend/executer"
 	"github.com/Lavender-QAQ/microservice-workflows-backend/executer/argo"
@@ -43,6 +44,10 @@ func DeployHandler(w http.ResponseWriter, r *http.Request) {
 
 		// Get xml data
 		xmlstr := xmlmsg.XmlStr
+
+		// Convert '_' to '-'
+		xmlstr = strings.Replace(xmlstr, "_", "-", -1)
+
 		// Parse xml to DAG
 		workflowId, mp, err := argo.Xml2Dag(logger.WithName("argo"), xmlstr)
 		if err != nil {

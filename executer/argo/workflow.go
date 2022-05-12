@@ -23,11 +23,7 @@ func CreateWorkflow(logger logr.Logger, name string, dag *map[string]common.Node
 
 	// Write specific nodes in the DAG as templates
 	for _, v := range *dag {
-		template, err := GenerateTemplate(logger, v)
-		if err != nil {
-			logger.Error(err, "Generate template fail")
-			return err
-		}
+		template := v.GenerateTemplate()
 		templates = append(templates, template)
 	}
 

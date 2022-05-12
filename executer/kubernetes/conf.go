@@ -8,18 +8,18 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const namespace string = "argo"
-
+var namespace string
 var KubeConfig []byte
 var RestConf *rest.Config
 var clientset *kubernetes.Clientset
 
-func Init(restConf *rest.Config) error {
+func Init(restConf *rest.Config, ns string) error {
 	var err error
 	clientset, err = InitClient(restConf)
 	if err != nil {
 		return err
 	}
+	namespace = ns
 	PodAdapter = clientset.CoreV1().Pods(namespace)
 	DeploymentAdapter = clientset.AppsV1().Deployments(namespace)
 	ServiceAdapter = clientset.CoreV1().Services(namespace)

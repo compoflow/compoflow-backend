@@ -18,9 +18,9 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"github.com/Lavender-QAQ/microservice-workflows-backend/conf"
 	"os"
+
+	"github.com/Lavender-QAQ/microservice-workflows-backend/conf"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
@@ -64,18 +64,19 @@ func registerLogger() error {
 func main() {
 	conf.Init()
 
-	kubeconfigPath := flag.String("kubeconfig", "./kubeconfig", "Kubernetes configuration file location")
-	listen := flag.String("listen", "127.0.0.1:30086", "Specify the listening ip address and port")
 	var metricsAddr string
 	var enableLeaderElection bool
 	var probeAddr string
 	var listen string
+	var namespace string
 	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
 
+	// Customize flags
+	flag.StringVar(&namespace, "namespace", "argo", "Specify a namespace for the workflow to run")
 	flag.StringVar(&listen, "listen", "127.0.0.1:30086", "Specify the listening ip address and port")
 
 	opts := zap.Options{
@@ -91,11 +92,12 @@ func main() {
 
 	mgr, err := ctrl.NewManager(restConf, ctrl.Options{
 		Scheme:                 scheme,
+		Namespace:              namespace,
 		MetricsBindAddress:     metricsAddr,
 		Port:                   9443,
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
-		LeaderElectionID:       "3826945b.my.domain",
+		LeaderElectionID:       "3826945b.tongjicad",
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
@@ -110,7 +112,7 @@ func main() {
 	}
 
 	// Init client-go
-	err = kubernetes.Init(restConf)
+	err = kubernetes.Init(restConf, namespace)
 	if err != nil {
 		logger.Error(err, "Fail to initialize kubernetes cluster")
 		return
@@ -133,11 +135,6 @@ func main() {
 	setupLog.Info("starting manager")
 	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
 		setupLog.Error(err, "problem running manager")
-		os.Exit(1)
-	}
-
-	if err != nil {
-		setupLog.Error(err, "error getting kubeconfig")
 		os.Exit(1)
 	}
 
