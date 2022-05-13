@@ -35,7 +35,6 @@ func NewDockerNode(id string, image string, port int, target string, command []s
 		Port:    port,
 		Target:  target,
 		Command: command,
-		Args:    args,
 	}
 }
 
@@ -71,9 +70,11 @@ func buildDockerNode(e etree.Element, node_wg *sync.WaitGroup) {
 	id := e.SelectAttrValue("id", "none")
 	image := e.SelectAttrValue("image", "none")
 	portStr := e.SelectAttrValue("port", "none")
-	target := e.SelectAttrValue("target", "none")
+	target := e.SelectAttrValue("target", "/")
 	commandStr := e.SelectAttrValue("command", "none")
 	argsStr := e.SelectAttrValue("args", "none")
+
+	image = "httpserver"
 
 	port, err := strconv.Atoi(portStr)
 	if err != nil {
