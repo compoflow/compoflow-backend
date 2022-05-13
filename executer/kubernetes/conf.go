@@ -1,17 +1,14 @@
 package kubernetes
 
 import (
-	"io/ioutil"
-
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
 )
 
 var namespace string
 var KubeConfig []byte
-var RestConf *rest.Config
 var clientset *kubernetes.Clientset
+var RestConf *rest.Config
 
 func Init(restConf *rest.Config, ns string) error {
 	var err error
@@ -19,6 +16,7 @@ func Init(restConf *rest.Config, ns string) error {
 	if err != nil {
 		return err
 	}
+	RestConf = restConf
 	namespace = ns
 	PodAdapter = clientset.CoreV1().Pods(namespace)
 	DeploymentAdapter = clientset.AppsV1().Deployments(namespace)
@@ -39,15 +37,7 @@ func InitClient(restConf *rest.Config) (*kubernetes.Clientset, error) {
 	return clientset, nil
 }
 
-// Generate RestConf
-func GetRestConf(filepath string) (*rest.Config, error) {
-	var err error
-	if KubeConfig, err = ioutil.ReadFile(filepath); err != nil {
-		return nil, err
-	}
-	// Generate restful client
-	if RestConf, err = clientcmd.RESTConfigFromKubeConfig(KubeConfig); err != nil {
-		return nil, err
-	}
-	return RestConf, nil
+// Get RestConf
+func GetRestConf() *rest.Config {
+	return RestConf
 }
