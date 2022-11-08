@@ -1,0 +1,17 @@
+domain: tongjicad
+layout:
+- go.kubebuilder.io/v3
+projectName: microservice-workflows-backend
+repo: github.com/Lavender-QAQ/microservice-workflows-backend
+resources:
+- controller: true
+  domain: tongjicad
+  group: microworkflows
+  kind: MicroWorkflow
+  version: v1alpha1
+- controller: true
+  domain: tongjicad
+  group: microworkflows
+  kind: Driver
+  version: v1alpha1
+version: "3"

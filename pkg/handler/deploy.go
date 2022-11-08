@@ -2,10 +2,12 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
+	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/executer"
+	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/executer/argo"
 	"github.com/go-logr/logr"
 )
 
@@ -42,6 +44,28 @@ func DeployHandler(w http.ResponseWriter, r *http.Request) {
 
 		// Get xml data
 		xmlstr := xmlmsg.XmlStr
-		fmt.Println(xmlstr)
+
+		// Convert '_' to '-'
+		xmlstr = strings.Replace(xmlstr, "_", "-", -1)
+
+		// Parse xml to DAG
+		workflowId, mp, err := argo.Xml2Dag(logger.WithName("argo"), xmlstr)
+		if err != nil {
+			logger.Error(err, "Fail to parse xml")
+			return
+		}
+		// Call executer package
+		starter := executer.NewWorkflowStarter(logger.WithName("executer"), workflowId, mp)
+		// Create workflow
+		err = starter.CreateWorkflow()
+		if err != nil {
+			logger.Error(err, "Starter create workflow fail")
+			return
+		}
+		_, err = io.WriteString(w, "success")
+		if err != nil {
+			logger.Error(err, "Fail to write response")
+			return
+		}
 	}
 }
