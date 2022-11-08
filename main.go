@@ -20,36 +20,34 @@ import (
 	"flag"
 	"os"
 
-	"github.com/Lavender-QAQ/microservice-workflows-backend/conf"
-
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
-	"k8s.io/apimachinery/pkg/runtime"
-	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
-	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	//+kubebuilder:scaffold:imports
+	"github.com/joho/godotenv"
 
-	"github.com/Lavender-QAQ/microservice-workflows-backend/executer/kubernetes"
-	"github.com/Lavender-QAQ/microservice-workflows-backend/handler"
-	"github.com/Lavender-QAQ/microservice-workflows-backend/router"
+	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/executer/kubernetes"
+	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/handler"
+	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/router"
 )
 
 var (
-	scheme   = runtime.NewScheme()
-	setupLog = ctrl.Log.WithName("setup")
-	logger   = ctrl.Log.WithName("run")
+	logger    = ctrl.Log.WithName("run")
+	namespace string
+	listen    string
 )
 
 func init() {
-	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
-
-	//+kubebuilder:scaffold:scheme
+	// 从本地读取环境变量
+	_ = godotenv.Load()
+	if os.Getenv("ACTIVE_ENV") == "DEV" {
+		_ = godotenv.Load(".env.dev")
+	} else if os.Getenv("ACTIVE_ENV") == "PROD" {
+		_ = godotenv.Load(".env.prod")
+	}
 }
 
 func registerLogger() error {
@@ -62,19 +60,6 @@ func registerLogger() error {
 }
 
 func main() {
-	conf.Init()
-
-	var metricsAddr string
-	var enableLeaderElection bool
-	var probeAddr string
-	var listen string
-	var namespace string
-	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
-	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
-	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
-		"Enable leader election for controller manager. "+
-			"Enabling this will ensure there is only one active controller manager.")
-
 	// Customize flags
 	flag.StringVar(&namespace, "namespace", "argo", "Specify a namespace for the workflow to run")
 	flag.StringVar(&listen, "listen", "127.0.0.1:30086", "Specify the listening ip address and port")
@@ -90,22 +75,8 @@ func main() {
 
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
 
-	mgr, err := ctrl.NewManager(restConf, ctrl.Options{
-		Scheme:                 scheme,
-		Namespace:              namespace,
-		MetricsBindAddress:     metricsAddr,
-		Port:                   9443,
-		HealthProbeBindAddress: probeAddr,
-		LeaderElection:         enableLeaderElection,
-		LeaderElectionID:       "3826945b.tongjicad",
-	})
-	if err != nil {
-		setupLog.Error(err, "unable to start manager")
-		os.Exit(1)
-	}
-
 	// Register logger
-	err = registerLogger()
+	err := registerLogger()
 	if err != nil {
 		logger.Error(err, "Fail to register logger")
 		return
@@ -119,23 +90,6 @@ func main() {
 	}
 
 	// Launch Router
-	go router.NewRouter(listen)
-
-	//+kubebuilder:scaffold:builder
-
-	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
-		setupLog.Error(err, "unable to set up health check")
-		os.Exit(1)
-	}
-	if err := mgr.AddReadyzCheck("readyz", healthz.Ping); err != nil {
-		setupLog.Error(err, "unable to set up ready check")
-		os.Exit(1)
-	}
-
-	setupLog.Info("starting manager")
-	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
-		setupLog.Error(err, "problem running manager")
-		os.Exit(1)
-	}
+	router.NewRouter(listen)
 
 }

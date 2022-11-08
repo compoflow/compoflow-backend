@@ -3,10 +3,11 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/minio/minio-go/v6"
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/minio/minio-go/v6"
 )
 
 type SaveRequest struct {

@@ -3,7 +3,7 @@ package router
 import (
 	"net/http"
 
-	"github.com/Lavender-QAQ/microservice-workflows-backend/handler"
+	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/handler"
 	"github.com/go-logr/logr"
 )
 

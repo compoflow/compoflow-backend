@@ -3,7 +3,7 @@ package argo
 import (
 	"strconv"
 
-	"github.com/Lavender-QAQ/microservice-workflows-backend/executer/kubernetes"
+	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/executer/kubernetes"
 )
 
 type Args []string

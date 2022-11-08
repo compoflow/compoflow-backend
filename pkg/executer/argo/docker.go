@@ -5,7 +5,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Lavender-QAQ/microservice-workflows-backend/executer/common"
+	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/executer/common"
 	"github.com/argoproj/argo-workflows/v3/pkg/apis/workflow/v1alpha1"
 	"github.com/beevik/etree"
 	v1 "k8s.io/api/core/v1"
@@ -36,32 +36,6 @@ func NewDockerNode(id string, image string, port int, target string, command []s
 		Target:  target,
 		Command: command,
 	}
-}
-
-func (node *DockerNode) GenerateTemplate() v1alpha1.Template {
-	template := v1alpha1.Template{
-		Name: node.GetId(),
-		Container: &v1.Container{
-			Image:   RequestImage,
-			Command: []string{"./agency"},
-		},
-	}
-
-	var args Args
-	if node.HaveInNode() && node.HaveOutNode() {
-		args = NewArgsWithInputAndOutput(node.GetInNode()[0], node.GetId(), node.Image, node.Port, node.Target)
-		template.Outputs.Artifacts = getTemplateArtifactsByOutcome(node.GetId())
-		template.Inputs.Artifacts = getTemplateArtifactsByIncome(node.GetInNode())
-	} else if node.HaveOutNode() {
-		template.Outputs.Artifacts = getTemplateArtifactsByOutcome(node.GetId())
-		args = NewArgsWithOutput(node.GetId(), node.Image, node.Port, node.Target)
-	} else if node.HaveInNode() {
-		template.Inputs.Artifacts = getTemplateArtifactsByIncome(node.GetInNode())
-		args = NewArgsWithInput(node.GetInNode()[0], node.Image, node.Port, node.Target)
-	}
-	template.Container.Args = args
-
-	return template
 }
 
 func (node *DockerNode) GenerateTemplate() v1alpha1.Template {
