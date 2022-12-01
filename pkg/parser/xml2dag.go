@@ -1,41 +1,34 @@
-package argo
+package parser
 
 import (
 	"errors"
-	"sync"
 
-	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/executer/common"
 	"github.com/beevik/etree"
 	"github.com/go-logr/logr"
 )
 
 var (
-	mp       map[string]common.NodeInterface
-	mp_mutex sync.Mutex
-	doc      *etree.Document
+	mp  map[string]*Node
+	doc *etree.Document
 )
 
 // build vertices of DAG
 func buildNode(tasks []*etree.Element) {
-	var node_wg sync.WaitGroup
 	for _, node := range tasks {
 		switch node.SelectAttrValue("custom", "none") {
 		case "1":
 			{
-				node_wg.Add(1)
-				go buildDockerNode(*node, &node_wg)
+				// TODO: Docker node
 				break
 			}
 		case "2":
 			{
-				node_wg.Add(1)
-				go buildPythonscriptNode(*node, &node_wg)
+				// TODO: Pythonscript node
 				break
 			}
 		case "3":
 			{
-				node_wg.Add(1)
-				go buildSuspendNode(*node, &node_wg)
+				// TODO: Suspend node
 				break
 			}
 		default:
@@ -44,7 +37,6 @@ func buildNode(tasks []*etree.Element) {
 			}
 		}
 	}
-	node_wg.Wait()
 }
 
 // Build the edge of the DAG
@@ -56,16 +48,15 @@ func buildFlow(flows []*etree.Element) {
 		if sourceRef == "none" || targetRef == "none" {
 			continue
 		}
-		mp[sourceRef].AppendOutNode(targetRef)
-		mp[targetRef].AppendInNode(sourceRef)
+		mp[targetRef].AppendDep(sourceRef)
 	}
 }
 
 // The entry function of the entire DAG building module,
 // completes the initialization of the map,
 // loading the etree package, building the DAG, and returning the workflow id
-func Xml2Dag(logger logr.Logger, xmlstr string) (string, *map[string]common.NodeInterface, error) {
-	mp = make(map[string]common.NodeInterface)
+func Xml2Dag(logger logr.Logger, xmlstr string) (string, *map[string]*Node, error) {
+	mp = make(map[string]*Node)
 	doc = etree.NewDocument()
 	if err := doc.ReadFromString(xmlstr); err != nil {
 		logger.Error(err, "Read xmlstr error")

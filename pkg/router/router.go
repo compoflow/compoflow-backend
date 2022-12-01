@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 
-	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/handler"
 	"github.com/go-logr/logr"
+	"github.com/tjcadworkflow/backend/pkg/handlers"
 )
 
 var RouterLogger logr.Logger
@@ -12,8 +12,8 @@ var RouterLogger logr.Logger
 func NewRouter(ip_port string) {
 	logger := RouterLogger
 
-	http.HandleFunc("/deploy", handler.DeployHandler)
-	http.HandleFunc("/save", handler.SaveHandler)
+	http.HandleFunc("/deploy", handlers.DeployHandler)
+	http.HandleFunc("/save", handlers.SaveHandler)
 
 	logger.WithValues("listening ip address and port", ip_port).Info("Start listen")
 

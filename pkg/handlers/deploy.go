@@ -1,4 +1,4 @@
-package handler
+package handlers
 
 import (
 	"encoding/json"
@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/executer"
-	"github.com/Lavender-QAQ/microservice-workflows-backend/pkg/executer/argo"
 	"github.com/go-logr/logr"
+	"github.com/tjcadworkflow/backend/pkg/executer"
+	"github.com/tjcadworkflow/backend/pkg/parser"
 )
 
 var HandlerLogger logr.Logger
@@ -49,7 +49,7 @@ func DeployHandler(w http.ResponseWriter, r *http.Request) {
 		xmlstr = strings.Replace(xmlstr, "_", "-", -1)
 
 		// Parse xml to DAG
-		workflowId, mp, err := argo.Xml2Dag(logger.WithName("argo"), xmlstr)
+		workflowId, mp, err := parser.Xml2Dag(logger.WithName("parser"), xmlstr)
 		if err != nil {
 			logger.Error(err, "Fail to parse xml")
 			return

@@ -15,7 +15,7 @@ import (
 
 var DeploymentAdapter type_appsv1.DeploymentInterface
 
-func GetDeploymenyByName(deploymentName string) (*appsv1.Deployment, error) {
+func getDeploymenyByName(deploymentName string) (*appsv1.Deployment, error) {
 	deployment, err := DeploymentAdapter.Get(context.TODO(), deploymentName, metav1.GetOptions{})
 	if err != nil {
 		return nil, err
@@ -24,7 +24,7 @@ func GetDeploymenyByName(deploymentName string) (*appsv1.Deployment, error) {
 }
 
 // Create the adaptive Service while creating the Deployment (call CreateService)
-func CreateDeployment(name string, image string, port int, command []string, args []string) error {
+func createDeployment(name string, image string, port int, command []string, args []string) error {
 	replicas := int32(1)
 	labels := make(map[string]string, 1)
 	labels["app"] = name
@@ -50,19 +50,19 @@ func CreateDeployment(name string, image string, port int, command []string, arg
 	if err != nil {
 		return errors.New("创建Deployment错误:" + err.Error())
 	}
-	err = CreateService(name, labels, port)
+	err = createService(name, labels, port)
 	if err != nil {
 		return errors.New("创建Service错误" + err.Error())
 	}
 	return nil
 }
 
-func DeleteDeployment(name string) error {
+func deleteDeployment(name string) error {
 	err := DeploymentAdapter.Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return err
 	}
-	err = DeleteService(name + "-svc")
+	err = deleteService(name + "-svc")
 	if err != nil {
 		return err
 	}
