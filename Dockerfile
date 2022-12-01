@@ -1,27 +1,26 @@
-# Build the manager binary
-FROM golang:1.17 as builder
-
+# Build binary
+FROM --platform=$BUILDPLATFORM golang:1.18-alpine AS builder
+ARG TARGETOS TARGETARCH
 WORKDIR /workspace
+
 # Copy the Go Modules manifests
 COPY go.mod go.mod
 COPY go.sum go.sum
-# cache deps before building and copying source so that we don't need to re-download as much
-# and so that source changes don't invalidate our downloaded layer
+
+# Cache deps
 RUN go mod download
 
-# Copy the go source
+# Copy go source
+COPY pkg/ pkg/
 COPY main.go main.go
-COPY api/ api/
-COPY controllers/ controllers/
 
 # Build
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager main.go
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -a -o backend ./main.go
 
-# Use distroless as minimal base image to package the manager binary
-# Refer to https://github.com/GoogleContainerTools/distroless for more details
-FROM gcr.io/distroless/static:nonroot
+# Store binary
+FROM --platform=$TARGETPLATFORM ubuntu:22.10
 WORKDIR /
-COPY --from=builder /workspace/manager .
-USER 65532:65532
+COPY --from=builder /workspace/backend .
+USER 8080:8080
 
-ENTRYPOINT ["/manager"]
+ENTRYPOINT ["/backend"]

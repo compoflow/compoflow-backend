@@ -13,7 +13,7 @@ import (
 
 var PodAdapter type_corev1.PodInterface
 
-func GetPodByName(podName string) (*v1.Pod, error) {
+func getPodByName(podName string) (*v1.Pod, error) {
 	pod, err := PodAdapter.Get(context.TODO(), podName, metav1.GetOptions{})
 	if err != nil {
 		return nil, err

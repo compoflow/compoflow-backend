@@ -11,7 +11,7 @@ import (
 
 var ServiceAdapter type_v1.ServiceInterface
 
-func GetServiceByName(serviceName string) (*v1.Service, error) {
+func getServiceByName(serviceName string) (*v1.Service, error) {
 	service, err := ServiceAdapter.Get(context.TODO(), serviceName, metav1.GetOptions{})
 	if err != nil {
 		return nil, err
@@ -19,7 +19,7 @@ func GetServiceByName(serviceName string) (*v1.Service, error) {
 	return service, nil
 }
 
-func CreateService(name string, labels map[string]string, port int) error {
+func createService(name string, labels map[string]string, port int) error {
 	var servicePorts []v1.ServicePort
 	servicePort := v1.ServicePort{
 		Protocol:   v1.ProtocolTCP,
@@ -49,7 +49,7 @@ func CreateService(name string, labels map[string]string, port int) error {
 	return nil
 }
 
-func DeleteService(name string) error {
+func deleteService(name string) error {
 	err := ServiceAdapter.Delete(context.TODO(), name, metav1.DeleteOptions{})
 	if err != nil {
 		return err

@@ -41,3 +41,8 @@ func InitClient(restConf *rest.Config) (*kubernetes.Clientset, error) {
 func GetRestConf() *rest.Config {
 	return RestConf
 }
+
+// Get ClientSet
+func GetClientSet() *kubernetes.Clientset {
+	return clientset
+}
