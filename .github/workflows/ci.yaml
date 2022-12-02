@@ -25,7 +25,8 @@ jobs:
           uses: golangci/golangci-lint-action@v2
           with:
             version: ${{ env.GOLANGCI_VERSION }}
-            args: --disable-all  -E deadcode -E gofmt -E goimports -E ineffassign -E misspell -E vet --timeout=15m
+            # args: --disable-all  -E unused -E gofmt -E goimports -E ineffassign -E misspell -E vet --timeout=15m
+            args: --disable-all -E gofmt -E goimports -E ineffassign -E misspell -E vet --timeout=15m
   unit-test:
     runs-on: ubuntu-22.04
     steps:
