@@ -19,6 +19,9 @@ build: fmt vet ## Build manager binary.
 run: fmt vet ## Run code from your host.
 	go run ./main.go
 
+test:
+	go test ./... -coverprofile cover.out
+
 IMG ?= tjcadworkflow/backend
 docker-build:
 	docker buildx build -t ${IMG} . --load
