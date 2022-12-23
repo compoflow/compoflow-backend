@@ -1,3 +1,5 @@
+TOOLS_DIR := tools
+
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
 GOBIN=$(shell go env GOPATH)/bin
@@ -56,3 +58,6 @@ endif
 
 lint: install-golint ## Run go lint against code.
 	$(GOLINT_BIN) run -v
+
+fake-frontend:
+	$(MAKE) -C $(TOOLS_DIR)/fake-frontend run
