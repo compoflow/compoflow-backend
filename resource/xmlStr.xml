@@ -1,25 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:metadata="http://metadata" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="5.1.2">
   <process id="rtdtrdt" isExecutable="false">
-    <task id="Docker_0pizbzq" metadata:image="lavenderqaq/httpserver" custom="1">
-      <outgoing>Flow_12dzb6f</outgoing>
+    <task id="Docker_1gz5201" name="A" metadata:image="kasterism/test_a" custom="1" port="8000" target="/test">
+      <outgoing>Flow_1bmj3u6</outgoing>
+      <outgoing>Flow_0ff4a34</outgoing>
     </task>
-    <task id="Docker_19t1frr" metadata:image="lavenderqaq/httpserver" custom="1">
-      <incoming>Flow_12dzb6f</incoming>
+    <task id="Docker_00io466" name="B" metadata:image="kasterism/test_b" custom="1" port="8001" target="/test">
+      <incoming>Flow_1bmj3u6</incoming>
+      <outgoing>Flow_0okni5c</outgoing>
     </task>
-    <sequenceFlow id="Flow_12dzb6f" sourceRef="Docker_0pizbzq" targetRef="Docker_19t1frr" />
+    <task id="Docker_0jm2rxo" name="C" metadata:image="kasterism/test_c" custom="1" port="8002" target="/test">
+      <incoming>Flow_0ff4a34</incoming>
+      <outgoing>Flow_190amw1</outgoing>
+    </task>
+    <task id="Docker_0eskzqs" name="D" metadata:image="kasterism/test_d" custom="1" port="8003" target="/test">
+      <incoming>Flow_0okni5c</incoming>
+      <incoming>Flow_190amw1</incoming>
+    </task>
+    <sequenceFlow id="Flow_1bmj3u6" sourceRef="Docker_1gz5201" targetRef="Docker_00io466" />
+    <sequenceFlow id="Flow_0okni5c" sourceRef="Docker_00io466" targetRef="Docker_0eskzqs" />
+    <sequenceFlow id="Flow_0ff4a34" sourceRef="Docker_1gz5201" targetRef="Docker_0jm2rxo" />
+    <sequenceFlow id="Flow_190amw1" sourceRef="Docker_0jm2rxo" targetRef="Docker_0eskzqs" />
   </process>
   <bpmndi:BPMNDiagram id="BpmnDiagram_1">
     <bpmndi:BPMNPlane id="BpmnPlane_1" bpmnElement="rtdtrdt">
-      <bpmndi:BPMNEdge id="Flow_12dzb6f_di" bpmnElement="Flow_12dzb6f">
-        <di:waypoint x="344" y="430" />
-        <di:waypoint x="656" y="430" />
+      <bpmndi:BPMNEdge id="Flow_1bmj3u6_di" bpmnElement="Flow_1bmj3u6">
+        <di:waypoint x="134" y="290" />
+        <di:waypoint x="220" y="290" />
+        <di:waypoint x="220" y="180" />
+        <di:waypoint x="306" y="180" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Docker_0pizbzq_di" bpmnElement="Docker_0pizbzq">
-        <omgdc:Bounds x="296" y="406" width="48.00001" height="48" />
+      <bpmndi:BPMNEdge id="Flow_0okni5c_di" bpmnElement="Flow_0okni5c">
+        <di:waypoint x="354" y="180" />
+        <di:waypoint x="470" y="180" />
+        <di:waypoint x="470" y="270" />
+        <di:waypoint x="586" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ff4a34_di" bpmnElement="Flow_0ff4a34">
+        <di:waypoint x="134" y="290" />
+        <di:waypoint x="230" y="290" />
+        <di:waypoint x="230" y="400" />
+        <di:waypoint x="306" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_190amw1_di" bpmnElement="Flow_190amw1">
+        <di:waypoint x="354" y="400" />
+        <di:waypoint x="470" y="400" />
+        <di:waypoint x="470" y="270" />
+        <di:waypoint x="586" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Docker_1gz5201_di" bpmnElement="Docker_1gz5201">
+        <omgdc:Bounds x="86" y="266" width="48" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Docker_19t1frr_di" bpmnElement="Docker_19t1frr">
-        <omgdc:Bounds x="656" y="406" width="48" height="48" />
+      <bpmndi:BPMNShape id="Docker_00io466_di" bpmnElement="Docker_00io466">
+        <omgdc:Bounds x="306" y="156" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Docker_0eskzqs_di" bpmnElement="Docker_0eskzqs">
+        <omgdc:Bounds x="586" y="246" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Docker_0jm2rxo_di" bpmnElement="Docker_0jm2rxo">
+        <omgdc:Bounds x="306" y="376" width="48" height="48" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
