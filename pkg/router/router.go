@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 
+	"github.com/compoflow/compoflow-backend/pkg/handlers"
 	"github.com/go-logr/logr"
-	"github.com/tjcadworkflow/backend/pkg/handlers"
 )
 
 var RouterLogger logr.Logger

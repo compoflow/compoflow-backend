@@ -1,4 +1,4 @@
-module github.com/tjcadworkflow/backend
+module github.com/compoflow/compoflow-backend
 
 go 1.18
 

@@ -10,9 +10,9 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/tjcadworkflow/backend/pkg/handlers"
-	"github.com/tjcadworkflow/backend/pkg/kubernetes"
-	"github.com/tjcadworkflow/backend/pkg/router"
+	"github.com/compoflow/compoflow-backend/pkg/handlers"
+	"github.com/compoflow/compoflow-backend/pkg/kubernetes"
+	"github.com/compoflow/compoflow-backend/pkg/router"
 )
 
 var (

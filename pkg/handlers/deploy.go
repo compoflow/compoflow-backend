@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/compoflow/compoflow-backend/pkg/executer"
+	"github.com/compoflow/compoflow-backend/pkg/parser"
 	"github.com/go-logr/logr"
-	"github.com/tjcadworkflow/backend/pkg/executer"
-	"github.com/tjcadworkflow/backend/pkg/parser"
 )
 
 var HandlerLogger logr.Logger
