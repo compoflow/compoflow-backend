@@ -8,18 +8,19 @@ import (
 )
 
 var (
-	mp  map[string]*Node
-	doc *etree.Document
+	logger logr.Logger
+	dag    NodeSet
+	doc    *etree.Document
 )
 
 // build vertices of DAG
 func buildNode(tasks []*etree.Element) {
 	for _, node := range tasks {
 		switch node.SelectAttrValue("custom", "none") {
-		case "1":
+		case DockerType:
 			{
-				// TODO: Docker node
-				break
+				newNode := NewDockerNode()
+				newNode.Fillin(node)
 			}
 		case "2":
 			{
@@ -48,15 +49,17 @@ func buildFlow(flows []*etree.Element) {
 		if sourceRef == "none" || targetRef == "none" {
 			continue
 		}
-		mp[targetRef].AppendDep(sourceRef)
+		dag[targetRef].AppendDep(sourceRef)
 	}
 }
 
 // The entry function of the entire DAG building module,
 // completes the initialization of the map,
 // loading the etree package, building the DAG, and returning the workflow id
-func Xml2Dag(logger logr.Logger, xmlstr string) (string, *map[string]*Node, error) {
-	mp = make(map[string]*Node)
+func Xml2Dag(log logr.Logger, xmlstr string) (string, *NodeSet, error) {
+	logger = log
+
+	dag = make(map[string]Node)
 	doc = etree.NewDocument()
 	if err := doc.ReadFromString(xmlstr); err != nil {
 		logger.Error(err, "Read xmlstr error")
@@ -70,5 +73,5 @@ func Xml2Dag(logger logr.Logger, xmlstr string) (string, *map[string]*Node, erro
 	if process_id == "none" {
 		return "", nil, errors.New("Workflow id is not present")
 	}
-	return process_id, &mp, nil
+	return process_id, &dag, nil
 }

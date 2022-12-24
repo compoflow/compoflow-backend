@@ -7,12 +7,12 @@ import (
 
 type WorkflowStarter struct {
 	Workflow_id string
-	dag         *map[string]*parser.Node
+	dag         *parser.NodeSet
 	Logger      logr.Logger
 }
 
 // Constructor of the workflow initiator
-func NewWorkflowStarter(logger logr.Logger, workflow_id string, dag *map[string]*parser.Node) *WorkflowStarter {
+func NewWorkflowStarter(logger logr.Logger, workflow_id string, dag *parser.NodeSet) *WorkflowStarter {
 	return &WorkflowStarter{
 		Workflow_id: workflow_id,
 		dag:         dag,
