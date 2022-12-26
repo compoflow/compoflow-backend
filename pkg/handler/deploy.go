@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"encoding/json"
@@ -49,13 +49,13 @@ func DeployHandler(w http.ResponseWriter, r *http.Request) {
 		xmlstr = strings.Replace(xmlstr, "_", "-", -1)
 
 		// Parse xml to DAG
-		workflowId, mp, err := parser.Xml2Dag(logger.WithName("parser"), xmlstr)
+		workflowId, dag, err := parser.Xml2Dag(logger.WithName("parser"), xmlstr)
 		if err != nil {
 			logger.Error(err, "Fail to parse xml")
 			return
 		}
 		// Call executer package
-		starter := executer.NewWorkflowStarter(logger.WithName("executer"), workflowId, mp)
+		starter := executer.NewWorkflowStarter(logger.WithName("executer"), workflowId, dag)
 		// Create workflow
 		err = starter.CreateWorkflow()
 		if err != nil {

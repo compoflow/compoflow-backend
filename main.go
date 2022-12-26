@@ -10,7 +10,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/compoflow/compoflow-backend/pkg/handlers"
+	"github.com/compoflow/compoflow-backend/pkg/handler"
 	"github.com/compoflow/compoflow-backend/pkg/kubernetes"
 	"github.com/compoflow/compoflow-backend/pkg/router"
 )
@@ -24,7 +24,7 @@ var (
 func registerLogger() error {
 
 	// Register handler
-	handlers.HandlerLogger = logger.WithName("Handler")
+	handler.HandlerLogger = logger.WithName("Handler")
 	router.RouterLogger = logger.WithName("Router")
 
 	return nil

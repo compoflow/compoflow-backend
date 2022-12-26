@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:metadata="http://metadata" id="sid-38422fae-e03e-43a3-bef4-bd33b32041b2" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="5.1.2">
   <process id="rtdtrdt" isExecutable="false">
-    <task id="Docker_1gz5201" name="A" metadata:image="kasterism/test_a" custom="1" port="8000" target="/test">
+    <task id="Docker_1gz5201" name="A" metadata:image="kasterism/test_a" custom="1" port="8000" target="/test" action="GET">
       <outgoing>Flow_1bmj3u6</outgoing>
       <outgoing>Flow_0ff4a34</outgoing>
     </task>
-    <task id="Docker_00io466" name="B" metadata:image="kasterism/test_b" custom="1" port="8001" target="/test">
+    <task id="Docker_00io466" name="B" metadata:image="kasterism/test_b" custom="1" port="8001" target="/test" action="POST">
       <incoming>Flow_1bmj3u6</incoming>
       <outgoing>Flow_0okni5c</outgoing>
     </task>
-    <task id="Docker_0jm2rxo" name="C" metadata:image="kasterism/test_c" custom="1" port="8002" target="/test">
+    <task id="Docker_0jm2rxo" name="C" metadata:image="kasterism/test_c" custom="1" port="8002" target="/test" action="POST">
       <incoming>Flow_0ff4a34</incoming>
       <outgoing>Flow_190amw1</outgoing>
     </task>
-    <task id="Docker_0eskzqs" name="D" metadata:image="kasterism/test_d" custom="1" port="8003" target="/test">
+    <task id="Docker_0eskzqs" name="D" metadata:image="kasterism/test_d" custom="1" port="8003" target="/test" action="POST">
       <incoming>Flow_0okni5c</incoming>
       <incoming>Flow_190amw1</incoming>
     </task>

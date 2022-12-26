@@ -3,7 +3,7 @@ package router
 import (
 	"net/http"
 
-	"github.com/compoflow/compoflow-backend/pkg/handlers"
+	"github.com/compoflow/compoflow-backend/pkg/handler"
 	"github.com/go-logr/logr"
 )
 
@@ -12,8 +12,8 @@ var RouterLogger logr.Logger
 func NewRouter(ip_port string) {
 	logger := RouterLogger
 
-	http.HandleFunc("/deploy", handlers.DeployHandler)
-	http.HandleFunc("/save", handlers.SaveHandler)
+	http.HandleFunc("/deploy", handler.DeployHandler)
+	http.HandleFunc("/save", handler.SaveHandler)
 
 	logger.WithValues("listening ip address and port", ip_port).Info("Start listen")
 
