@@ -21,16 +21,7 @@ func buildNode(tasks []*etree.Element) {
 			{
 				newNode := NewDockerNode()
 				newNode.Fillin(node)
-			}
-		case "2":
-			{
-				// TODO: Pythonscript node
-				break
-			}
-		case "3":
-			{
-				// TODO: Suspend node
-				break
+				dag[newNode.GetName()] = newNode
 			}
 		default:
 			{
