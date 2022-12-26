@@ -69,6 +69,6 @@ func NewDockerNode() *DockerNode {
 }
 
 func (d *DockerNode) Fillin(element *etree.Element) error {
-	// TODO: Parse element to node infomation
+	// TODO: Parse element to node information
 	return nil
 }
